@@ -1,29 +1,33 @@
-let maxCharCount = 1992;
-let verticalGap = 1;
-let horizontalGap = 1;
-// https://en.wikipedia.org/wiki/Relative_luminance
-let rScale = .2126;
-let gScale = .7152;
-let bScale = .0722;
-let dotToHex = [0x1, 0x8, 0x2, 0x10, 0x4, 0x20, 0x40, 0x80];
+'use strict';
+let DotArt = {};
 
-document.addEventListener('DOMContentLoaded', function() {
+DotArt.maxCharCount = 1992;
+DotArt.verticalGap = 1;
+DotArt.horizontalGap = 1;
+// https://en.wikipedia.org/wiki/Relative_luminance
+DotArt.rScale = .2126;
+DotArt.gScale = .7152;
+DotArt.bScale = .0722;
+DotArt.dotToHex = [0x1, 0x8, 0x2, 0x10, 0x4, 0x20, 0x40, 0x80];
+DotArt.scaledImageData;
+
+DotArt.init = function() {
   document.getElementById('file-input').addEventListener('change', function(e) {
     e.preventDefault();
-    scaledImageData = null;
+    this.scaledImageData = null;
     let uploadedImage = e.target.files[0];
     let reader = new FileReader();
     reader.addEventListener('load', function(e) {
       let image = new Image();
       image.addEventListener('load', function(e) {
-        let charWidth = Math.ceil(image.width / (2 + verticalGap));
-        let charHeight = Math.ceil(image.height / (8 + horizontalGap));
+        let charWidth = Math.ceil(image.width / (2 + this.verticalGap));
+        let charHeight = Math.ceil(image.height / (8 + this.horizontalGap));
         let targetWidth = image.width;
         let targetHeight = image.height;
         let isTaller = image.height > image.width;
         let aspectRatio = targetWidth / targetHeight;
         // @todo factor line breaks when calculating character count
-        while (charWidth * charHeight > maxCharCount) {
+        while (charWidth * charHeight > this.maxCharCount) {
           if (isTaller) {
             targetWidth--;
             targetHeight = Math.round(targetWidth * (1 / aspectRatio));
@@ -44,16 +48,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let string = "";
         for (var charY = 0; charY < charHeight; charY++) {
-          let yPixel = charY * (8 + horizontalGap);
+          let yPixel = charY * (8 + this.horizontalGap);
           for (var charX = 0; charX < charWidth; charX++) {
-            let xPixel = charX * (2 + verticalGap);
+            let xPixel = charX * (2 + this.verticalGap);
             // https://en.wikipedia.org/wiki/Relative_luminance
             let colors = canvasContext.getImageData(xPixel, yPixel, 2, 8).data;
             let char = 0x2800;
             for (var pip = 0; pip < 8; pip++) {
               let offset = pip * 4;
               // Convert to grayscale, then b&w
-              let grayVal = (colors[offset] * rScale) + (colors[offset + 1] * gScale) + (colors[offset] * bScale);
+              let grayVal = (colors[offset] * this.rScale) + (colors[offset + 1] * this.gScale) + (colors[offset] * this.bScale);
               if (grayVal > 127) {
                 char += dotToHex[pip];
               }
@@ -74,4 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     reader.readAsDataURL(uploadedImage);
   });
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  DotArt.init();
 });
