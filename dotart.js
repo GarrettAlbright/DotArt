@@ -35,8 +35,8 @@ DotArt.init = function() {
         
         // Scale image via canvas
         let canvas = document.createElement('canvas');
-        let targetHeight = cellRows * 8;
-        let targetWidth = cellColumns * 2;
+        let targetHeight = (cellRows * 8) + ((cellRows - 1) * DotArt.horizontalGap);
+        let targetWidth = (cellColumns * 2) + ((cellColumns - 1) * DotArt.verticalGap);
         canvas.setAttribute('width', targetWidth);
         canvas.setAttribute('height', targetHeight);
         let canvasContext = canvas.getContext('2d');
@@ -59,9 +59,9 @@ DotArt.init = function() {
         canvasContext.putImageData(imageData, 0, 0);
         let string = "";
         for (var charY = 0; charY < cellRows; charY++) {
-          let yPixel = charY * 8;
+          let yPixel = charY * (8 + DotArt.horizontalGap);
           for (var charX = 0; charX < cellColumns; charX++) {
-            let xPixel = charX * 2;
+            let xPixel = charX * (2 + DotArt.verticalGap);
             let cell = canvasContext.getImageData(xPixel, yPixel, 2, 8).data;
             let character = 0x2800;
             for (var pip = 0; pip < 8; pip++) {
