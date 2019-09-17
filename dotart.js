@@ -57,7 +57,7 @@ DotArt.init = function() {
             grayVal = 0;
           }
           else {
-            grayVal = (imageData.data[pixelOffset] * DotArt.rScale) + (imageData.data[pixelOffset + 1] + DotArt.gScale) + (imageData.data[pixelOffset + 2] * DotArt.bScale);
+            grayVal = (imageData.data[pixelOffset] * DotArt.rScale) + (imageData.data[pixelOffset + 1] * DotArt.gScale) + (imageData.data[pixelOffset + 2] * DotArt.bScale);
           }
           DotArt.currentGraymap.push(grayVal);
         }
