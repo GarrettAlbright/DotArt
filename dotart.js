@@ -83,31 +83,38 @@ DotArt.init = function() {
     });
     reader.readAsDataURL(uploadedImage);
   });
+  document.getElementById('threshold').addEventListener('change', function(e) {
+    DotArt.convertFromGraymap();
+  })
 };
 
 DotArt.convertFromGraymap = function() {
-    let string = "";
-    let rowWidth = DotArt.cellColumns * 2;
-    for (var charY = 0; charY < DotArt.cellRows; charY++) {
-      for (var charX = 0; charX < DotArt.cellColumns; charX++) {
-        let character = 0x2800;
-        let graymapOffset = ((charY * DotArt.targetWidth * (8 + DotArt.horizontalGap))) + (charX * (2 + DotArt.verticalGap));
-        for (var pip = 0; pip < 8; pip++) {
-          let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
-          if (DotArt.currentGraymap[graymapPos] > DotArt.bwThreshold) {
-            character += DotArt.dotToHex[pip];
-          }
+  if (DotArt.currentGraymap == null) {
+    return;
+  }
+  let string = "";
+  let rowWidth = DotArt.cellColumns * 2;
+  let threshold = Number(document.getElementById('threshold').value);
+  for (var charY = 0; charY < DotArt.cellRows; charY++) {
+    for (var charX = 0; charX < DotArt.cellColumns; charX++) {
+      let character = 0x2800;
+      let graymapOffset = ((charY * DotArt.targetWidth * (8 + DotArt.horizontalGap))) + (charX * (2 + DotArt.verticalGap));
+      for (var pip = 0; pip < 8; pip++) {
+        let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
+        if (DotArt.currentGraymap[graymapPos] > threshold) {
+          character += DotArt.dotToHex[pip];
         }
-        string += String.fromCharCode(character);
       }
-      string += "\n";
+      string += String.fromCharCode(character);
     }
-    let textNode = document.createTextNode(string);
-    let resultNode = document.getElementById('result');
-    while (resultNode.firstChild) {
-      resultNode.removeChild(resultNode.firstChild);
-    }
-    resultNode.appendChild(textNode);
+    string += "\n";
+  }
+  let textNode = document.createTextNode(string);
+  let resultNode = document.getElementById('result');
+  while (resultNode.firstChild) {
+    resultNode.removeChild(resultNode.firstChild);
+  }
+  resultNode.appendChild(textNode);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
