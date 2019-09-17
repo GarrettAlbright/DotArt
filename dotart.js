@@ -9,6 +9,9 @@ DotArt.rScale = .2126;
 DotArt.gScale = .7152;
 DotArt.bScale = .0722;
 DotArt.dotToHex = [0x1, 0x8, 0x2, 0x10, 0x4, 0x20, 0x40, 0x80];
+// https://en.wikipedia.org/wiki/Ordered_dithering
+// (reordered in pip order
+DotArt.orderedDitherMatrix = [0, 8, 12, 4, 3, 11, 15, 7, 2, 10, 14, 6, 1, 9, 13, 5];
 DotArt.currentGraymap;
 DotArt.bwThreshold = 127;
 DotArt.cellRows;
@@ -37,6 +40,9 @@ DotArt.init = function() {
     });
   });
   document.getElementById('threshold').addEventListener('change', function(e) {
+    DotArt.convertFromGraymap();
+  });
+  document.getElementById('dither').addEventListener('change', function(e) {
     DotArt.convertFromGraymap();
   });
 };
@@ -109,13 +115,19 @@ DotArt.convertFromGraymap = function() {
   let string = "";
   let rowWidth = DotArt.cellColumns * 2;
   let threshold = Number(document.getElementById('threshold').value);
+  let dither = document.getElementById('dither').checked;
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
       let character = 0x2800;
       let graymapOffset = ((charY * DotArt.targetWidth * (8 + DotArt.horizontalGap))) + (charX * (2 + DotArt.verticalGap));
+      let ditherMatrixOffset = charX % 2 ? 0 : 8;
       for (var pip = 0; pip < 8; pip++) {
         let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
-        if (DotArt.currentGraymap[graymapPos] > threshold) {
+        let grayShade = DotArt.currentGraymap[graymapPos];
+        if (dither) {
+          grayShade += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] * 16;
+        }
+        if (grayShade > threshold) {
           character += DotArt.dotToHex[pip];
         }
       }
