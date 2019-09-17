@@ -1,7 +1,6 @@
 'use strict';
 let DotArt = {};
 
-DotArt.maxCharCount = 1992;
 DotArt.verticalGap = 1;
 DotArt.horizontalGap = 1;
 DotArt.charAspectRatio = .5;
@@ -32,7 +31,7 @@ DotArt.init = function() {
     });
     reader.readAsDataURL(uploadedImage);
   });
-  ['vert-gap', 'horiz-gap'].forEach(function (id) {
+  ['vert-gap', 'horiz-gap', 'char-count'].forEach(function (id) {
     document.getElementById(id).addEventListener('change', function(e) {
       DotArt.buildGraymap();
     });
@@ -48,12 +47,13 @@ DotArt.buildGraymap = function() {
   // smaller than the limit
   let cellHeight = 0;
   let cellWidth;
+  let maxCharCount = Number(document.getElementById('char-count').value);
   do {
     cellHeight++;
     cellWidth = cellHeight * DotArt.charAspectRatio;
     DotArt.cellRows = Math.ceil(DotArt.image.height / cellHeight);
     DotArt.cellColumns = Math.ceil(DotArt.image.width / cellWidth);
-  } while ((DotArt.cellColumns + 1) * DotArt.cellRows > DotArt.maxCharCount);
+  } while ((DotArt.cellColumns + 1) * DotArt.cellRows > maxCharCount);
 
   DotArt.horizontalGap = Number(document.getElementById('horiz-gap').value);
   DotArt.verticalGap = Number(document.getElementById('vert-gap').value);
