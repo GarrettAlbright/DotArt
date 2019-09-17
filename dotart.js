@@ -39,11 +39,10 @@ DotArt.init = function() {
       DotArt.buildGraymap();
     });
   });
-  document.getElementById('threshold').addEventListener('change', function(e) {
-    DotArt.convertFromGraymap();
-  });
-  document.getElementById('dither').addEventListener('change', function(e) {
-    DotArt.convertFromGraymap();
+  ['coloring-wonb', 'coloring-bonw', 'threshold', 'dither'].forEach(function (id) {
+    document.getElementById(id).addEventListener('change', function(e) {
+      DotArt.convertFromGraymap();
+    });
   });
 };
 
@@ -116,6 +115,7 @@ DotArt.convertFromGraymap = function() {
   let rowWidth = DotArt.cellColumns * 2;
   let threshold = Number(document.getElementById('threshold').value);
   let dither = document.getElementById('dither').checked;
+  let bonw = document.getElementById('coloring-bonw').checked;
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
       let character = 0x2800;
@@ -127,7 +127,8 @@ DotArt.convertFromGraymap = function() {
         if (dither) {
           grayShade += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] * 16;
         }
-        if (grayShade > threshold) {
+        if ((!bonw && grayShade > threshold) || (bonw && grayShade < threshold)) {
+          // Make a dot
           character += DotArt.dotToHex[pip];
         }
       }
@@ -137,6 +138,7 @@ DotArt.convertFromGraymap = function() {
   }
   let textNode = document.createTextNode(string);
   let resultNode = document.getElementById('result');
+  resultNode.setAttribute('class', bonw ? 'bonw' : 'wonb');
   while (resultNode.firstChild) {
     resultNode.removeChild(resultNode.firstChild);
   }

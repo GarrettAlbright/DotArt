@@ -1,6 +1,11 @@
-pre {
+pre#result {
   background-color: black;
   color: white;
   font-family: monospace;
   font-size: small;
+}
+
+pre#result.bonw {
+  background-color: white;
+  color: black;
 }
