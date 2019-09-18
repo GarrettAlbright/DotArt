@@ -1,11 +1,32 @@
+form > label {
+  display: block;
+  overflow: auto;
+}
+
+form input[type=number] {
+  float: right;
+  position: relative;
+}
+
 pre#result {
   background-color: black;
   color: white;
   font-family: monospace;
   font-size: small;
+  padding: 1rem;
 }
 
 pre#result.bonw {
   background-color: white;
   color: black;
+}
+
+
+@media screen and (min-width: 640px) {
+  form, pre#result {
+    float: left;
+  }
+  pre#result {
+    margin-left: 1rem;
+  }
 }
