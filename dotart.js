@@ -11,7 +11,7 @@ DotArt.bScale = .0722;
 DotArt.dotToHex = [0x1, 0x8, 0x2, 0x10, 0x4, 0x20, 0x40, 0x80];
 // https://en.wikipedia.org/wiki/Ordered_dithering
 // (reordered in pip order
-DotArt.orderedDitherMatrix = [0, 8, 12, 4, 3, 11, 15, 7, 2, 10, 14, 6, 1, 9, 13, 5];
+DotArt.orderedDitherMatrix = [0, 128, 192, 64, 48, 176, 240, 112, 32, 160, 224, 96, 16, 144, 208, 80];
 DotArt.currentGraymap;
 DotArt.bwThreshold = 127;
 DotArt.cellRows;
@@ -125,7 +125,7 @@ DotArt.convertFromGraymap = function() {
         let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
         let grayShade = DotArt.currentGraymap[graymapPos];
         if (dither) {
-          grayShade += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] * 16;
+          grayShade += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip];
         }
         if ((!bonw && grayShade > threshold) || (bonw && grayShade < threshold)) {
           // Make a dot
