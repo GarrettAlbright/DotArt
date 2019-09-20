@@ -3,14 +3,15 @@
   <head>
     <script type="text/javascript" src="dotart.js"></script>
     <link type="text/css" rel="stylesheet" href="dotart.css" />
-    <title>Dot Art</title>
+    <title>DotArt</title>
   </head>
   <body>
+    <header><h1>DotArt</h1><p>Image to braille character converter</p></header>
     <form>
       <label>File upload <input type="file" id="file-input" name="file-input" accept="image/jpeg,image/png,image/gif" /></label>
       <label>Threshold<input type="number" min="0" max="255" value="127" id="threshold" /></label>
       <label>Max characters<input type="number" min="140" max="65536" id="char-count" value="2000" /></label>
-      <label><input type="checkbox" id="dither" />Dithering</label>
+      <label><input type="checkbox" id="dither" checked="checked" />Dithering</label>
       <label><input type="radio" name="coloring" value="wonb" checked="checked" id="coloring-wonb" />White on Black</label>
       <label><input type="radio" name="coloring" value="bonw" id="coloring-bonw" />Black on White</label>
       <label>Horizontal gap<input type="number" min="0" max="9" id="horiz-gap" value="1"/></label>
@@ -19,5 +20,6 @@
     </form>
 <!--     <canvas id="canvas"></canvas> -->
     <pre id="result"></pre>
+    <footer>A <a href="https://albright.pro/">Garrett Albright</a> project (hire me!) &middot; <a href="https://github.com/GarrettAlbright/DotArt">Repo @ GitHub</a></footer>
   </body>
 </html>

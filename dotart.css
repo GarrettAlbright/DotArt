@@ -1,3 +1,27 @@
+body {
+  color: #333;
+  background-color: #eee;
+  font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+}
+
+a:visited, a:link {
+  color: navy;
+}
+
+header {
+  overflow: auto;
+}
+
+header > h1 {
+/*   float: left; */
+  margin: 0;
+}
+
+header > p {
+  float: right;
+  margin: 0;
+}
+
 form > label {
   display: block;
   overflow: auto;
@@ -14,6 +38,13 @@ pre#result {
   font-family: monospace;
   font-size: small;
   padding: 1rem;
+  /* Hide until a result has been loaded into it */
+  display: none;
+}
+
+pre#result.bonw,
+pre#result.wonb {
+  display: block;
 }
 
 pre#result.bonw {
@@ -21,6 +52,13 @@ pre#result.bonw {
   color: black;
 }
 
+footer {
+  position: absolute;
+  bottom: 0;
+  padding: 1em;
+  text-align: center;
+  width: 100%;
+}
 
 @media screen and (min-width: 640px) {
   form, pre#result {
