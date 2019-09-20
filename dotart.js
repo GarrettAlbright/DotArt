@@ -10,7 +10,7 @@ DotArt.gScale = .7152;
 DotArt.bScale = .0722;
 DotArt.dotToHex = [0x1, 0x8, 0x2, 0x10, 0x4, 0x20, 0x40, 0x80];
 // https://en.wikipedia.org/wiki/Ordered_dithering
-// (reordered in pip order
+// (reordered in pip order)
 DotArt.orderedDitherMatrix = [0, 128, 192, 64, 48, 176, 240, 112, 32, 160, 224, 96, 16, 144, 208, 80];
 DotArt.currentGraymap;
 DotArt.bwThreshold = 127;
@@ -77,11 +77,12 @@ DotArt.buildGraymap = function() {
   DotArt.currentGraymap = [];
   let imageData = canvasContext.getImageData(0, 0, DotArt.targetWidth, DotArt.targetHeight);
   let dataLen = imageData.data.length;
+  let bonw = document.getElementById('coloring-bonw').checked;
   for (var pixelOffset = 0; pixelOffset < dataLen; pixelOffset += 4) {
-    // Treat non-opaque pixels as black
     let grayVal;
+    // Treat non-opaque pixels as "empty"
     if (imageData.data[pixelOffset + 3] < 255) {
-      grayVal = 0;
+      grayVal = bonw ? 0 : 255;
     }
     else {
       grayVal = (imageData.data[pixelOffset] * DotArt.rScale) + (imageData.data[pixelOffset + 1] * DotArt.gScale) + (imageData.data[pixelOffset + 2] * DotArt.bScale);
@@ -115,7 +116,6 @@ DotArt.convertFromGraymap = function() {
   let rowWidth = DotArt.cellColumns * 2;
   let dither = document.getElementById('dither').checked;
   let threshold = Number(document.getElementById('threshold').value);
-
   let bonw = document.getElementById('coloring-bonw').checked;
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
