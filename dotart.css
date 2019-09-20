@@ -13,7 +13,6 @@ header {
 }
 
 header > h1 {
-/*   float: left; */
   margin: 0;
 }
 
@@ -32,24 +31,32 @@ form input[type=number] {
   position: relative;
 }
 
-pre#result {
+#result {
+  display: none;  
+}
+
+#result > pre {
   background-color: black;
   color: white;
   font-family: monospace;
   font-size: small;
   padding: 1rem;
   /* Hide until a result has been loaded into it */
-  display: none;
 }
 
-pre#result.bonw,
-pre#result.wonb {
+#result.bonw,
+#result.wonb {
   display: block;
 }
 
-pre#result.bonw {
+#result.bonw > pre {
   background-color: white;
   color: black;
+}
+
+#result > input#copy-to-clip {
+  margin: 1rem auto 0 auto;
+  display: block;
 }
 
 footer {
@@ -61,10 +68,10 @@ footer {
 }
 
 @media screen and (min-width: 640px) {
-  form, pre#result {
+  form, #result {
     float: left;
   }
-  pre#result {
+  #result {
     margin-left: 1rem;
   }
 }

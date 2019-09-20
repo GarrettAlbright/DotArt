@@ -44,6 +44,27 @@ DotArt.init = function() {
       DotArt.convertFromGraymap();
     });
   });
+  document.getElementById('copy-to-clip').addEventListener('click', function(e) {
+    // https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+    let text = document.getElementById('result').getElementsByTagName('pre')[0].firstChild.textContent;
+    let ta = document.createElement('textarea');
+    document.body.appendChild(ta);
+    ta.value = text;
+    ta.focus();
+    ta.select();
+    let success = false;
+    try {
+      success = document.execCommand('copy');
+    }
+    catch (error) {
+      success = false;
+    }
+    e.target.value = success ? 'Copied!' : 'Copy failed';
+    window.setTimeout(function() {
+      e.target.value = 'Copy to clipboard';
+    }, 3000);
+    document.body.removeChild(ta);
+  });
 };
 
 DotArt.buildGraymap = function() {
@@ -118,6 +139,7 @@ DotArt.convertFromGraymap = function() {
   let threshold = Number(document.getElementById('threshold').value);
   let bonw = document.getElementById('coloring-bonw').checked;
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
+    string += "\n";
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
       let character = 0x2800;
       let graymapOffset = ((charY * DotArt.targetWidth * (8 + DotArt.horizontalGap))) + (charX * (2 + DotArt.verticalGap));
@@ -136,15 +158,16 @@ DotArt.convertFromGraymap = function() {
       }
       string += String.fromCharCode(character);
     }
-    string += "\n";
   }
-  let textNode = document.createTextNode(string);
+  // Strip off first "\n"
+  let textNode = document.createTextNode(string.substring(1));
   let resultNode = document.getElementById('result');
   resultNode.setAttribute('class', bonw ? 'bonw' : 'wonb');
-  while (resultNode.firstChild) {
-    resultNode.removeChild(resultNode.firstChild);
+  let preNode = resultNode.getElementsByTagName('pre')[0];
+  while (preNode.firstChild) {
+    preNode.removeChild(preNode.firstChild);
   }
-  resultNode.appendChild(textNode);
+  preNode.appendChild(textNode);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
