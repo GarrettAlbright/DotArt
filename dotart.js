@@ -113,8 +113,9 @@ DotArt.convertFromGraymap = function() {
   }
   let string = "";
   let rowWidth = DotArt.cellColumns * 2;
-  let threshold = Number(document.getElementById('threshold').value);
   let dither = document.getElementById('dither').checked;
+  let threshold = Number(document.getElementById('threshold').value);
+
   let bonw = document.getElementById('coloring-bonw').checked;
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
@@ -124,10 +125,11 @@ DotArt.convertFromGraymap = function() {
       for (var pip = 0; pip < 8; pip++) {
         let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
         let grayShade = DotArt.currentGraymap[graymapPos];
+        let localThreshold = threshold;
         if (dither) {
-          grayShade += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip];
+          localThreshold += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] - 127;
         }
-        if ((!bonw && grayShade > threshold) || (bonw && grayShade < threshold)) {
+        if ((!bonw && grayShade > localThreshold) || (bonw && grayShade < localThreshold)) {
           // Make a dot
           character += DotArt.dotToHex[pip];
         }
