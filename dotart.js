@@ -173,11 +173,6 @@ DotArt.convertFromGraymap = function() {
   }
   let string = "";
   let rowWidth = DotArt.cellColumns * 2;
-/*
-  let dither = document.getElementById('dither').checked;
-  let threshold = Number(document.getElementById('threshold').value);
-  let bonw = document.getElementById('coloring-bonw').checked;
-*/
   // Because JavaScript doesn't provide a way to copy a reference variable
   let localGraymap = [];
   DotArt.currentGraymap.forEach(function(val) {
@@ -195,35 +190,34 @@ DotArt.convertFromGraymap = function() {
         if (DotArt.currentSettings.ditherType == DotArt.ditherTypes.ATKINSON) {
           let target = grayShade > DotArt.currentSettings.threshold ? 255 : 0;
           let error = grayShade - target;
-          if (error == 0) {
-            continue;
-          }
-          let errorPart = error / 8;
-
-          // Error distribution map where x = 1/8 of the error:
-          // [ ] [*] [x] [x]
-          // [x] [x] [x] [ ]
-          // [ ] [x] [ ] [ ]
-          // We need to get X and Y values of the pixels so that we don't go off
-          // the edges.
-          let yPos = Math.floor(graymapPos / DotArt.targetWidth);
-          let xPos = graymapPos - (yPos * DotArt.targetWidth);
-          if (xPos + 1 < DotArt.targetWidth) {
-            localGraymap[graymapPos + 1] += errorPart;
-            if (xPos + 2 < DotArt.targetWidth) {
-              localGraymap[graymapPos + 2] += errorPart;
-            }
-          }
-          if (yPos + 1 < DotArt.targetHeight) {
-            localGraymap[graymapPos + DotArt.targetWidth] += errorPart;
-            if (xPos - 1 >= 0) {
-              localGraymap[graymapPos + DotArt.targetWidth - 1] += errorPart;
-            }
+          if (error != 0) {
+            let errorPart = error / 8;
+  
+            // Error distribution map where x = 1/8 of the error:
+            // [ ] [*] [x] [x]
+            // [x] [x] [x] [ ]
+            // [ ] [x] [ ] [ ]
+            // We need to get X and Y values of the pixels so that we don't go off
+            // the edges.
+            let yPos = Math.floor(graymapPos / DotArt.targetWidth);
+            let xPos = graymapPos - (yPos * DotArt.targetWidth);
             if (xPos + 1 < DotArt.targetWidth) {
-              localGraymap[graymapPos + DotArt.targetWidth + 1] += errorPart;
+              localGraymap[graymapPos + 1] += errorPart;
+              if (xPos + 2 < DotArt.targetWidth) {
+                localGraymap[graymapPos + 2] += errorPart;
+              }
             }
-            if (yPos + 2 < DotArt.targetHeight) {
-              localGraymap[graymapPos + (DotArt.targetWidth * 2)] += errorPart;
+            if (yPos + 1 < DotArt.targetHeight) {
+              localGraymap[graymapPos + DotArt.targetWidth] += errorPart;
+              if (xPos - 1 >= 0) {
+                localGraymap[graymapPos + DotArt.targetWidth - 1] += errorPart;
+              }
+              if (xPos + 1 < DotArt.targetWidth) {
+                localGraymap[graymapPos + DotArt.targetWidth + 1] += errorPart;
+              }
+              if (yPos + 2 < DotArt.targetHeight) {
+                localGraymap[graymapPos + (DotArt.targetWidth * 2)] += errorPart;
+              }
             }
           }
           
