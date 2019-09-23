@@ -1,9 +1,9 @@
 'use strict';
 let DotArt = {};
 
-DotArt.verticalGap = 1;
-DotArt.horizontalGap = 1;
-DotArt.charAspectRatio = .5;
+DotArt.currentSettings = {
+  charAspectRatio: .5
+};
 // https://en.wikipedia.org/wiki/Relative_luminance
 DotArt.rScale = .2126;
 DotArt.gScale = .7152;
@@ -21,6 +21,7 @@ DotArt.targetHeight;
 DotArt.image;
 
 DotArt.init = function() {
+/*
   document.getElementById('file-input').addEventListener('change', function(e) {
     e.preventDefault();
     let uploadedImage = e.target.files[0];
@@ -34,16 +35,44 @@ DotArt.init = function() {
     });
     reader.readAsDataURL(uploadedImage);
   });
-  ['vert-gap', 'horiz-gap', 'char-count'].forEach(function (id) {
-    document.getElementById(id).addEventListener('change', function(e) {
+*/
+
+  let theForm = document.forms[0];
+
+  theForm.addEventListener('change', function(e) {
+    [
+      ['vert-gap', 'vertGap'],
+      ['horiz-gap', 'horizGap'],
+      ['char-count', 'maxCharCount'],
+      ['threshold', 'threshold']
+    ].forEach(function (field) {
+      DotArt.currentSettings[field[1]] = Number(theForm.querySelector('input[name=' + field[0] + ']').value);
+    });
+    DotArt.currentSettings.dither = theForm.querySelector('input[name=dither]').checked;
+    DotArt.currentSettings.bonw = theForm.querySelector('input[name=coloring]:checked').value == 'bonw';
+
+    let elName = e.target.getAttribute('name');
+    if (elName == 'file-input') {
+      e.preventDefault();
+      let uploadedImage = e.target.files[0];
+      let reader = new FileReader();
+      reader.addEventListener('load', function(e) {
+        DotArt.image = new Image();
+        DotArt.image.addEventListener('load', function(e) {
+          DotArt.buildGraymap();
+        });
+        DotArt.image.src = e.target.result;
+      });
+      reader.readAsDataURL(uploadedImage);
+    }
+    else if (['vert-gap', 'horiz-gap', 'char-count'].indexOf(elName) != -1) {
       DotArt.buildGraymap();
-    });
-  });
-  ['coloring-wonb', 'coloring-bonw', 'threshold', 'dither'].forEach(function (id) {
-    document.getElementById(id).addEventListener('change', function(e) {
+    }
+    else if (['coloring', 'threshold', 'dither'].indexOf(elName) != -1) {
       DotArt.convertFromGraymap();
-    });
+    }
   });
+
   document.getElementById('copy-to-clip').addEventListener('click', function(e) {
     // https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
     let text = document.getElementById('result').getElementsByTagName('pre')[0].firstChild.textContent;
@@ -73,22 +102,17 @@ DotArt.buildGraymap = function() {
   // smaller than the limit
   let cellHeight = 0;
   let cellWidth;
-  let maxCharCount = Number(document.getElementById('char-count').value);
   do {
     cellHeight++;
-    cellWidth = cellHeight * DotArt.charAspectRatio;
+    cellWidth = cellHeight * DotArt.currentSettings.charAspectRatio;
     DotArt.cellRows = Math.ceil(DotArt.image.height / cellHeight);
     DotArt.cellColumns = Math.ceil(DotArt.image.width / cellWidth);
-  } while ((DotArt.cellColumns + 1) * DotArt.cellRows > maxCharCount);
-
-  DotArt.horizontalGap = Number(document.getElementById('horiz-gap').value);
-  DotArt.verticalGap = Number(document.getElementById('vert-gap').value);
-  
+  } while ((DotArt.cellColumns + 1) * DotArt.cellRows > DotArt.currentSettings.maxCharCount);  
 
   // Scale image via canvas
   let canvas = document.createElement('canvas');
-  DotArt.targetHeight = (DotArt.cellRows * 8) + ((DotArt.cellRows - 1) * DotArt.horizontalGap);
-  DotArt.targetWidth = (DotArt.cellColumns * 2) + ((DotArt.cellColumns - 1) * DotArt.verticalGap);
+  DotArt.targetHeight = (DotArt.cellRows * 8) + ((DotArt.cellRows - 1) * DotArt.currentSettings.horizGap);
+  DotArt.targetWidth = (DotArt.cellColumns * 2) + ((DotArt.cellColumns - 1) * DotArt.currentSettings.vertGap);
   canvas.setAttribute('width', DotArt.targetWidth);
   canvas.setAttribute('height', DotArt.targetHeight);
   let canvasContext = canvas.getContext('2d');
@@ -135,23 +159,25 @@ DotArt.convertFromGraymap = function() {
   }
   let string = "";
   let rowWidth = DotArt.cellColumns * 2;
+/*
   let dither = document.getElementById('dither').checked;
   let threshold = Number(document.getElementById('threshold').value);
   let bonw = document.getElementById('coloring-bonw').checked;
+*/
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     string += "\n";
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
       let character = 0x2800;
-      let graymapOffset = ((charY * DotArt.targetWidth * (8 + DotArt.horizontalGap))) + (charX * (2 + DotArt.verticalGap));
+      let graymapOffset = ((charY * DotArt.targetWidth * (8 + DotArt.currentSettings.horizGap))) + (charX * (2 + DotArt.currentSettings.vertGap));
       let ditherMatrixOffset = charX % 2 ? 0 : 8;
       for (var pip = 0; pip < 8; pip++) {
         let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
         let grayShade = DotArt.currentGraymap[graymapPos];
-        let localThreshold = threshold;
-        if (dither) {
+        let localThreshold = DotArt.currentSettings.threshold;
+        if (DotArt.currentSettings.dither) {
           localThreshold += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] - 127;
         }
-        if ((!bonw && grayShade > localThreshold) || (bonw && grayShade < localThreshold)) {
+        if ((!DotArt.currentSettings.bonw && grayShade > localThreshold) || (DotArt.currentSettings.bonw && grayShade < localThreshold)) {
           // Make a dot
           character += DotArt.dotToHex[pip];
         }
@@ -162,7 +188,7 @@ DotArt.convertFromGraymap = function() {
   // Strip off first "\n"
   let textNode = document.createTextNode(string.substring(1));
   let resultNode = document.getElementById('result');
-  resultNode.setAttribute('class', bonw ? 'bonw' : 'wonb');
+  resultNode.setAttribute('class', DotArt.currentSettings.bonw ? 'bonw' : 'wonb');
   let preNode = resultNode.getElementsByTagName('pre')[0];
   while (preNode.firstChild) {
     preNode.removeChild(preNode.firstChild);

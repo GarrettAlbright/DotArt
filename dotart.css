@@ -21,7 +21,7 @@ header > p {
   margin: 0;
 }
 
-form > label {
+form label {
   display: block;
   overflow: auto;
 }
