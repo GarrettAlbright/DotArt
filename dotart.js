@@ -13,12 +13,17 @@ DotArt.dotToHex = [0x1, 0x8, 0x2, 0x10, 0x4, 0x20, 0x40, 0x80];
 // (reordered in pip order)
 DotArt.orderedDitherMatrix = [0, 128, 192, 64, 48, 176, 240, 112, 32, 160, 224, 96, 16, 144, 208, 80];
 DotArt.currentGraymap;
-DotArt.bwThreshold = 127;
 DotArt.cellRows;
 DotArt.cellColumns;
 DotArt.targetWidth;
 DotArt.targetHeight;
 DotArt.image;
+DotArt.ditherTypes = {
+  NONE: 0,
+  ORDERED: 1,
+  ATKINSON: 2,
+  FS: 3
+};
 
 DotArt.init = function() {
 /*
@@ -48,7 +53,16 @@ DotArt.init = function() {
     ].forEach(function (field) {
       DotArt.currentSettings[field[1]] = Number(theForm.querySelector('input[name=' + field[0] + ']').value);
     });
-    DotArt.currentSettings.dither = theForm.querySelector('input[name=dither]').checked;
+    switch (theForm.querySelector('input[name=dither]:checked').value) {
+      case 'ordered':
+        DotArt.currentSettings.ditherType = DotArt.ditherTypes.ORDERED;
+        break;
+      case 'atkinson':
+        DotArt.currentSettings.ditherType = DotArt.ditherTypes.ATKINSON;
+        break;
+      default:
+        DotArt.currentSettings.ditherType = DotArt.ditherTypes.NONE;
+    }
     DotArt.currentSettings.bonw = theForm.querySelector('input[name=coloring]:checked').value == 'bonw';
 
     let elName = e.target.getAttribute('name');
@@ -150,7 +164,7 @@ DotArt.buildGraymap = function() {
     }
   }
 */
-  DotArt.convertFromGraymap();        
+  DotArt.convertFromGraymap();
 };
 
 DotArt.convertFromGraymap = function() {
@@ -164,6 +178,11 @@ DotArt.convertFromGraymap = function() {
   let threshold = Number(document.getElementById('threshold').value);
   let bonw = document.getElementById('coloring-bonw').checked;
 */
+  // Because JavaScript doesn't provide a way to copy a reference variable
+  let localGraymap = [];
+  DotArt.currentGraymap.forEach(function(val) {
+    localGraymap.push(val);
+  });
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     string += "\n";
     for (var charX = 0; charX < DotArt.cellColumns; charX++) {
@@ -172,14 +191,55 @@ DotArt.convertFromGraymap = function() {
       let ditherMatrixOffset = charX % 2 ? 0 : 8;
       for (var pip = 0; pip < 8; pip++) {
         let graymapPos = graymapOffset + (Math.floor(pip / 2) * DotArt.targetWidth) + (pip % 2);
-        let grayShade = DotArt.currentGraymap[graymapPos];
-        let localThreshold = DotArt.currentSettings.threshold;
-        if (DotArt.currentSettings.dither) {
-          localThreshold += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] - 127;
+        let grayShade = localGraymap[graymapPos];
+        if (DotArt.currentSettings.ditherType == DotArt.ditherTypes.ATKINSON) {
+          let target = grayShade > DotArt.currentSettings.threshold ? 255 : 0;
+          let error = grayShade - target;
+          if (error == 0) {
+            continue;
+          }
+          let errorPart = error / 8;
+
+          // Error distribution map where x = 1/8 of the error:
+          // [ ] [*] [x] [x]
+          // [x] [x] [x] [ ]
+          // [ ] [x] [ ] [ ]
+          // We need to get X and Y values of the pixels so that we don't go off
+          // the edges.
+          let yPos = Math.floor(graymapPos / DotArt.targetWidth);
+          let xPos = graymapPos - (yPos * DotArt.targetWidth);
+          if (xPos + 1 < DotArt.targetWidth) {
+            localGraymap[graymapPos + 1] += errorPart;
+            if (xPos + 2 < DotArt.targetWidth) {
+              localGraymap[graymapPos + 2] += errorPart;
+            }
+          }
+          if (yPos + 1 < DotArt.targetHeight) {
+            localGraymap[graymapPos + DotArt.targetWidth] += errorPart;
+            if (xPos - 1 >= 0) {
+              localGraymap[graymapPos + DotArt.targetWidth - 1] += errorPart;
+            }
+            if (xPos + 1 < DotArt.targetWidth) {
+              localGraymap[graymapPos + DotArt.targetWidth + 1] += errorPart;
+            }
+            if (yPos + 2 < DotArt.targetHeight) {
+              localGraymap[graymapPos + (DotArt.targetWidth * 2)] += errorPart;
+            }
+          }
+          
+          if ((target == 255 && !DotArt.currentSettings.bonw) || (target == 0 && DotArt.currentSettings.bonw)) {
+            character += DotArt.dotToHex[pip];
+          }
         }
-        if ((!DotArt.currentSettings.bonw && grayShade > localThreshold) || (DotArt.currentSettings.bonw && grayShade < localThreshold)) {
-          // Make a dot
-          character += DotArt.dotToHex[pip];
+        else {
+          let localThreshold = DotArt.currentSettings.threshold;
+          if (DotArt.currentSettings.ditherType == DotArt.ditherTypes.ORDERED) {
+            localThreshold += DotArt.orderedDitherMatrix[ditherMatrixOffset + pip] - 127;
+          }
+          if ((!DotArt.currentSettings.bonw && grayShade > localThreshold) || (DotArt.currentSettings.bonw && grayShade < localThreshold)) {
+            // Make a dot
+            character += DotArt.dotToHex[pip];
+          }
         }
       }
       string += String.fromCharCode(character);
