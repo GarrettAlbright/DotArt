@@ -8,6 +8,7 @@ As this involves converting a color-based image into a 1-bit black-and-white one
 
 Some examples:
 
+```
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣟⡿⣻⣻⣻⣻⣻⣟⡿⣿⢿⣿⣿⣿⣟⣟⣟⡿⣻⣻⣻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣻⣻⣻⢯⣻⣯⣯⢯⣯⣯⣻⣽⢿⣿⣿⣿⣟⣽⡽⡽⡽⡽⡽⣽⣻⣻⡿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣻⡽⣽⡽⣽⣻⣻⣻⣽⣽⣽⣽⣻⣽⣻⢿⡿⡿⣯⢯⢯⣳⡽⡽⣽⣽⢯⣻⣟⣟⢿⣻⢿⡿⣿⣿⣿⣿⣿
@@ -46,9 +47,11 @@ Some examples:
 ⡟⢤⣿⣯⠎⠀⣀⠄⠠⣄⠀⣆⢠⢀⠰⡁⠄⠂⡄⠀⠐⠴⢎⠀⠐⠀⠀⠤⡂⢠⠀⠄⠐⠀⠆⠀⡀⠀⠰⡒⣄⡗⣐⣴⡘⣰⡐⢷⣤
 ⢟⠐⣠⢠⣿⣏⡄⣼⠀⠄⡷⠄⢣⠀⡜⠘⡂⠀⠀⢠⡄⢄⣄⠀⠀⠀⠐⡀⡇⢲⠀⡀⠄⢀⠆⠰⠀⢂⠄⠆⠘⡴⣯⢲⢠⡿⠃⢓⢹
 ⠿⠿⢶⠿⠷⠼⠶⠻⠶⠴⠲⠔⠲⡽⡞⠒⠒⡐⢒⠶⡓⡃⢒⠒⡖⣒⠖⠳⠣⠳⠒⠱⡱⡁⠡⠠⠁⠑⠀⠀⠀⠀⢀⠋⢇⠀⠀⠀⠀
+```
 
 Tokyo Tower at night ([original](https://www.flickr.com/photos/nknh/452345990/in/photolist-FYoGN-mPj5MR-5wmNmD-p9eACs-8VDmsr-ox32k7-fhgz7o-7U9dMv-7hKgvE-27EYZ8h-7hFiJZ-8hQUqE-6ShWFF-7hFhor-5RteRm-6XEwkF-8fmbYZ-4ZAJ8j-ox3bgH-mPkPWf-pmmwvi-fNpMw3-mPj7Ut-bnrNfe-5heDhk-mPj6sF-6c1K2H-8ja5ap-8U7xn5-EjS5W9-8npmhv-o7ivtU-a23eeY-LxLbS-7U9dQ2-7hFg6i-26wzaSr-4Z7dVk-e19gVS-54QBnm-nPCUJs-afvnm-QNrFQQ-7hFiin-63ZvV4-7hFhbe-LxLbQ-m4xFg-5vQb5R-7hKcRG)), black on white mode, Atkinson dithering on
 
+```
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡄⠀⠀⠀⠀⠀⢠⠀⠀⠀⠀⢠⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣇⠀⠀⢰⠀⢸⣷⠀⣧⠀⣾⢿⠀⢰⠀⢸⣧⠀⠀⠀⠀⠀⢰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -78,7 +81,7 @@ Tokyo Tower at night ([original](https://www.flickr.com/photos/nknh/452345990/in
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⣿⠃⠀⠀⣿⢩⡟⠈⢿⣿⠛⣿⠿⣿⠉⠸⣸⠀⠀⠻⣸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠀⠀⠸⡇⠀⠀⣇⡇⠀⠀⢿⡇⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
+```
 OpenBSD’s Puffy ([original](http://www.openbsd.org/art4.html)), black on white mode, no dithering
 
 DotArt uses no server-side components. Simply open the index.html file in a modern web browser and go to town.
