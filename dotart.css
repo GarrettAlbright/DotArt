@@ -32,6 +32,7 @@ form input[type=number] {
 }
 
 #result {
+  /* Hide until a result has been loaded into it */
   display: none;  
 }
 
@@ -41,7 +42,6 @@ form input[type=number] {
   font-family: monospace;
   font-size: small;
   padding: 1rem;
-  /* Hide until a result has been loaded into it */
 }
 
 #result.bonw,
@@ -65,6 +65,42 @@ footer {
   padding: 1em;
   text-align: center;
   width: 100%;
+}
+
+aside {
+  /* https://css-tricks.com/considerations-styling-modal/ */
+  position: fixed;
+  width: 90%;
+  max-height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  background-color: #eee;
+  box-shadow: 0px 0px 8px black;
+  overflow: scroll;
+}
+
+aside.closed {
+  display: none;
+}
+
+aside #modal-close {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  padding: 1rem;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}
+
+#modal-open {
+  display: block;
+  margin-bottom: 1em;
 }
 
 @media screen and (min-width: 640px) {

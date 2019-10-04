@@ -8,6 +8,7 @@
   <body>
     <header><h1>DotArt</h1><p>Image to braille character converter</p></header>
     <form>
+      <a href="#" id="modal-open">Help / About</a>
       <label>File upload <input type="file" id="file-input" name="file-input" accept="image/jpeg,image/png,image/gif" /></label>
       <label>Threshold<input type="number" min="0" max="255" value="127" id="threshold" name="threshold" /></label>
       <label>Max characters<input type="number" min="140" max="65536" name="char-count" value="2000" /></label>
@@ -32,5 +33,25 @@
       <input type="button" id="copy-to-clip" value="Copy to clipboard" />
     </div>
     <footer>A <a href="https://albright.pro/">Garrett Albright</a> project (hire me!) &middot; <a href="https://github.com/GarrettAlbright/DotArt">Repo @ GitHub</a></footer>
+    <aside id="about-modal" class="closed">
+      <div id="modal-close">Close</div>
+      <h2>What is DotArt?</h2>
+      <p>DotArt is a browser-based tool for converting images to text using Unicode braille characters, the &ldquo;dots&rdquo; of which will form a rough representation of the image. It&rsquo;s kind of hard to explain - you&rsquo;ll understand it quicker if you just give it a try.</p>
+      <p>The text-based images this tool creates can be used in places where images cannot; for example, on forums or chat systems (such as Discord and Slack) where users may post text but not images. It can also be used simply when the aesthetic if the images it creates are desirable.</p>
+      <h2>How does DotArt work?</h2>
+      <p>After you choose a picture, DotArt scales the image so that it will fit under the Unicode character limit. It then internally converts the image to a grayscale representation of itself (that is, an image which consists only of shades of gray). The image is then processed again to consist only of a black or white version of itself (that is, only black and white pixels; no shades of gray) based on other settings you provide. The &ldquo;dots&rdquo; of that image are used to build the Unicode braille characters representing the image. Well, some of those steps actually happen a little out of order, but that&rsquo;s the basics of it.</p>
+      <h2>What do the controls do?</h2>
+      <p>DotArt provides various controls to tweak the appearance of its results. You are encouraged to experiment with the controls to get the best results.</p>
+      <ul>
+        <li><b>File upload:</b> Choose the file you wish to convert. Note that this tool works entirely in your browser and the image is not &ldquo;uploaded&rdquo; to a server for processing. (Don&rsquo;t believe me? <a href="https://github.com/GarrettAlbright/DotArt">Check out the code yourself.</a>)</li>
+        <li><b>Threshold:</b> When converting from the grayscale to black-and-white representations of the image, this value represents the &ldquo;cutoff&rdquo; between what shades of gray are converted to black and what shades of gray are converted to white. Adjusting this value will result in a darker or lighter image.</li>
+        <li><b>Max characters:</b> The maximum number of text characters which can be used to represent your image. If the system you are trying to use complains about the message being too long when you paste in DotArt&rsquo;s results, try reducing this number.</li>
+        <li><b>Dithering:</b> With dithering enabled, different shades of gray will be represented by different patterns of dots in the final image. Ordered dithering will result in a more uniform pattern; Atkinson dithering looks more random but generally shows the edges between light and dark areas better.</li>
+        <li><b>Coloring:</b> Adjust whether DotArt&rsquo;s results will be used on a system which represents light text on a dark background (White on Black; Discord, by default), or dark text on a light background (Black on White; Slack and most web sites).</li>
+        <li><b>Horizontal &amp; Vertical Gap:</b> Adjusts how wide, in braille &ldquo;dots,&rdquo; the gaps are between characters. The default values of 1 will suffice in most cases, but you might need to experiment a bit to get proper-looking results depending on the styles and fonts used by the final system.</li>
+      </ul>
+      <h2>Who made this?</h2>
+      <p><a href="https://albright.pro/">Garrett Albright</a>, a freelance web developer, with vanilla CSS, vanilla JS, and HTML5. Hire me!</p>
+    </aside>
   </body>
 </html>

@@ -252,4 +252,13 @@ DotArt.convertFromGraymap = function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   DotArt.init();
+
+  document.getElementById('modal-close').addEventListener('click', function(e) {
+    document.getElementById('about-modal').setAttribute('class', 'closed');
+  });
+  
+  document.getElementById('modal-open').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('about-modal').setAttribute('class', '');    
+  });
 });
