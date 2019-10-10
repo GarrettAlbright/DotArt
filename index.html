@@ -5,34 +5,39 @@
     <link type="text/css" rel="stylesheet" href="dotart.css" />
     <title>DotArt</title>
   </head>
-  <body>
-    <header><h1>DotArt</h1><p>Image to braille character converter</p></header>
-    <form>
-      <a href="#" id="modal-open">Help / About</a>
-      <label>File upload <input type="file" id="file-input" name="file-input" accept="image/jpeg,image/png,image/gif" /></label>
-      <label>Threshold<input type="number" min="0" max="255" value="127" id="threshold" name="threshold" /></label>
-      <label>Max characters<input type="number" min="140" max="65536" name="char-count" value="2000" /></label>
-      <fieldset>
-        <legend>Dithering</legend>
-        <label><input type="radio" name="dither" value="none" checked="checked" />None</label>
-        <label><input type="radio" name="dither" value="ordered" />Ordered</label>
-        <label><input type="radio" name="dither" value="atkinson" />Atkinson</label>
-      </fieldset>
-      <fieldset>
-        <legend>Coloring</legend>
-        <label><input type="radio" name="coloring" value="wonb" checked="checked" id="coloring-wonb" />White on Black</label>
-        <label><input type="radio" name="coloring" value="bonw" id="coloring-bonw" />Black on White</label>
-      </fieldset>
-      <label>Horizontal gap<input type="number" min="0" max="9" name="horiz-gap" value="1"/></label>
-      <label>Vertical gap<input type="number" min="0" max="9" name="vert-gap" value="1" /></label>
-      
-    </form>
-<!--     <canvas id="canvas"></canvas> -->
-    <div id="result">
-      <pre></pre>
-      <input type="button" id="copy-to-clip" value="Copy to clipboard" />
-    </div>
-    <footer>A <a href="https://albright.pro/">Garrett Albright</a> project (hire me!) &middot; <a href="https://github.com/GarrettAlbright/DotArt">Repo @ GitHub</a></footer>
+  <body class="modal-open">
+    <aside id="no-js-modal">
+      <p>JavaScript is required to use DotArt. If you see this message, either your browser does not support JavaScript, or its JavaScript support is not sufficiently modern enough to support the features that DotArt needs to make use of. More information may be found in your browser&rsquo;s JavaScript console.</p>
+    </aside>
+    <main>
+      <header><h1>DotArt</h1><p>Image to braille character converter</p></header>
+      <form>
+        <a href="#" id="modal-open">Help / About</a>
+        <label>File upload <input type="file" id="file-input" name="file-input" accept="image/jpeg,image/png,image/gif" /></label>
+        <label>Threshold<input type="number" min="0" max="255" value="127" id="threshold" name="threshold" /></label>
+        <label>Max characters<input type="number" min="140" max="65536" name="char-count" value="2000" /></label>
+        <fieldset>
+          <legend>Dithering</legend>
+          <label><input type="radio" name="dither" value="none" checked="checked" />None</label>
+          <label><input type="radio" name="dither" value="ordered" />Ordered</label>
+          <label><input type="radio" name="dither" value="atkinson" />Atkinson</label>
+        </fieldset>
+        <fieldset>
+          <legend>Coloring</legend>
+          <label><input type="radio" name="coloring" value="wonb" checked="checked" id="coloring-wonb" />White on Black</label>
+          <label><input type="radio" name="coloring" value="bonw" id="coloring-bonw" />Black on White</label>
+        </fieldset>
+        <label>Horizontal gap<input type="number" min="0" max="9" name="horiz-gap" value="1"/></label>
+        <label>Vertical gap<input type="number" min="0" max="9" name="vert-gap" value="1" /></label>
+        
+      </form>
+  <!--     <canvas id="canvas"></canvas> -->
+      <div id="result">
+        <pre></pre>
+        <input type="button" id="copy-to-clip" value="Copy to clipboard" />
+      </div>
+      <footer>A <a href="https://albright.pro/">Garrett Albright</a> project (hire me!) &middot; <a href="https://github.com/GarrettAlbright/DotArt">Repo @ GitHub</a></footer>
+    </main>
     <aside id="about-modal" class="closed">
       <div id="modal-close">Close</div>
       <h2>What is DotArt?</h2>

@@ -251,14 +251,54 @@ DotArt.convertFromGraymap = function() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Check for browser support
+  var fail = false;
+  if (typeof FileReader !== 'function') {
+    console.error('The browser does not support FileReader.');
+    fail = true;
+  }
+  
+  if (typeof document.querySelector !== 'function') {
+    console.error('The browser does not support querySelector.');
+    fail = true;
+  }
+  
+  if (typeof document.createElement('canvas').getContext !== 'function') {
+    console.error('The browser does not support Canvas.');
+    fail = true;
+  }
+  
+  if (typeof Image !== 'function') {
+    console.error('The browser does not support Image.');
+    fail = true;
+  }
+  
+  try {
+    let asdf;
+  }
+  catch (error) {
+    console.error('The browser does not support the "let" keyword.');
+    fail = true;
+  }
+  
+  if (fail) {
+    return;
+  }
+  
+  // If we made it here, hide the "no js" message.
+  document.getElementById('no-js-modal').setAttribute('class', 'closed');
+  document.body.setAttribute('class', '');
+  
   DotArt.init();
 
   document.getElementById('modal-close').addEventListener('click', function(e) {
     document.getElementById('about-modal').setAttribute('class', 'closed');
+  document.body.setAttribute('class', '');
   });
   
   document.getElementById('modal-open').addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('about-modal').setAttribute('class', '');    
+  document.body.setAttribute('class', 'modal-open');
   });
 });

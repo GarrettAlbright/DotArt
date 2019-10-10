@@ -4,6 +4,10 @@ body {
   font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
 }
 
+body.modal-open main {
+  filter: blur(3px);
+}
+
 a:visited, a:link {
   color: navy;
 }
