@@ -46,6 +46,7 @@ form input[type=number] {
   font-family: monospace;
   font-size: small;
   padding: 1rem;
+  line-height: 1.375;
 }
 
 #result.bonw,
