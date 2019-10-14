@@ -141,7 +141,7 @@ DotArt.buildGraymap = function() {
     let grayVal;
     // Treat non-opaque pixels as "empty"
     if (imageData.data[pixelOffset + 3] < 255) {
-      grayVal = bonw ? 0 : 255;
+      grayVal = -1;
     }
     else {
       grayVal = (imageData.data[pixelOffset] * DotArt.rScale) + (imageData.data[pixelOffset + 1] * DotArt.gScale) + (imageData.data[pixelOffset + 2] * DotArt.bScale);
@@ -175,8 +175,9 @@ DotArt.convertFromGraymap = function() {
   let rowWidth = DotArt.cellColumns * 2;
   // Because JavaScript doesn't provide a way to copy a reference variable
   let localGraymap = [];
+  let bonw = document.getElementById('coloring-bonw').checked;
   DotArt.currentGraymap.forEach(function(val) {
-    localGraymap.push(val);
+    localGraymap.push(val !== -1 ? val : (bonw ? 255 : 0));
   });
   for (var charY = 0; charY < DotArt.cellRows; charY++) {
     string += "\n";
