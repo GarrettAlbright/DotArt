@@ -15,8 +15,8 @@
       <form>
         <a href="#" id="modal-open">Help / About</a>
         <label>File select <input type="file" id="file-input" name="file-input" accept="image/jpeg,image/png,image/gif" /></label>
-        <label>Threshold<input type="number" min="0" max="255" value="127" id="threshold" name="threshold" /></label>
-        <label>Max characters<input type="number" min="140" max="65536" name="char-count" value="2000" /></label>
+        <label>Threshold<input type="number" min="0" max="255" value="127" id="threshold" name="threshold" size="3" /></label>
+        <label>Max characters<input type="number" min="140" max="65536" name="char-count" value="2000" size="4" /></label>
         <fieldset>
           <legend>Dithering</legend>
           <label><input type="radio" name="dither" value="none" checked="checked" />None</label>
@@ -28,8 +28,8 @@
           <label><input type="radio" name="coloring" value="wonb" checked="checked" id="coloring-wonb" />White on Black</label>
           <label><input type="radio" name="coloring" value="bonw" id="coloring-bonw" />Black on White</label>
         </fieldset>
-        <label>Horizontal gap<input type="number" min="0" max="9" name="horiz-gap" value="2"/></label>
-        <label>Vertical gap<input type="number" min="0" max="9" name="vert-gap" value="1" /></label>
+        <label>Horizontal gap<input type="number" min="0" max="9" name="horiz-gap" value="2" size="1" /></label>
+        <label>Vertical gap<input type="number" min="0" max="9" name="vert-gap" value="1" size="1" /></label>
         
       </form>
   <!--     <canvas id="canvas"></canvas> -->
