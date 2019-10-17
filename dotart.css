@@ -38,6 +38,7 @@ form input[type=number] {
 #result {
   /* Hide until a result has been loaded into it */
   display: none;  
+  overflow: auto;
 }
 
 #result > pre {
@@ -47,6 +48,7 @@ form input[type=number] {
   font-size: small;
   padding: 1rem;
   line-height: 1.375;
+  overflow: auto;
 }
 
 #result.bonw,
@@ -65,11 +67,9 @@ form input[type=number] {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  padding: 1em;
+  padding: 0 1em;
   text-align: center;
-  width: 100%;
+  font-size: smaller;
 }
 
 aside {
@@ -105,7 +105,7 @@ aside #modal-close {
 
 #modal-open {
   display: block;
-  margin-bottom: 1em;
+  margin: 1em 0;
 }
 
 @media screen and (min-width: 640px) {
